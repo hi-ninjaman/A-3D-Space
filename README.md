@@ -28,4 +28,6 @@ I currently have a test map, where you can test the mechanics.
 
 Unfortunately, I can't upload the build file due to it being too large. So, please go to https://hi-ninjaman.itch.io/a-3d-space to download and play. The main script is still here though, will get changed.
 
-![Gameplay Screenshot](./image_2026-11-08_210752201.png)
+![Gameplay Screenshot](./image_2026-11-08_210752201.png) 
+
+![Gameplay Screenshot](./image_2026-11-22_220939278.png)
