@@ -7,11 +7,15 @@ public class CORRUPTION : MonoBehaviour
     public Material[] corruptionMaterial;
     private Renderer[] allParts;
     public Material newSkybox;
+    public bool randomize = false;
 
     public float timer = 0f;
     public bool timerEnabled = false;
     public bool isActivated;
     public TMP_Text timerText;
+
+    public AudioSource backgroundMusic;
+    public AudioSource CorruptionMusic;
 
     public GameObject EXIT;
     public GameObject GATE;
@@ -30,29 +34,19 @@ public class CORRUPTION : MonoBehaviour
         // this detects if someone enters the area of the portal
         Collider[] sensed = Physics.OverlapSphere(PORTAL.transform.position, portalRadius, playerLayer);
 
+        Collider[] left = Physics.OverlapSphere(EXIT.transform.position, portalRadius, playerLayer);
+
         if (sensed.Length > 0 && !isActivated)
         {
             isActivated = true;
+            ActivateCorruption();
         }
 
-        if(isActivated)
+        if (sensed.Length > 0 && isActivated)
         {
-            EXIT.SetActive(true);
-            GATE.SetActive(true);
-            timerEnabled = true;
-
-            RenderSettings.skybox = newSkybox;
-            DynamicGI.UpdateEnvironment();
-            foreach (Renderer part in allParts)
-            {
-                if (part != null && !part.CompareTag("Player"))
-                {
-                    int randomIndex = Random.Range(0, corruptionMaterial.Length);
-                    part.material = corruptionMaterial[randomIndex];
-                    Debug.Log("Corrupted:" + part.gameObject.name);
-                }
-            }
+            SceneManager.LoadScene("HOME");
         }
+
         if (timerEnabled)
         {
             TIMER.SetActive(true);
@@ -61,7 +55,31 @@ public class CORRUPTION : MonoBehaviour
             timerText.text = "[00:" + Mathf.CeilToInt(timer).ToString("00") + "]";
             if (timer <= 0)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Application.Quit();
+            }
+        }
+    }
+
+    void ActivateCorruption()
+    {
+        EXIT.SetActive(true);
+        GATE.SetActive(true);
+
+        TIMER.SetActive(true);
+        timerEnabled = true;
+
+        backgroundMusic.Stop();
+        CorruptionMusic.Play();
+
+        RenderSettings.skybox = newSkybox;
+        DynamicGI.UpdateEnvironment();
+        foreach (Renderer part in allParts)
+        {
+            if (part != null && !part.CompareTag("Player"))
+            {
+                int randomIndex = Random.Range(0, corruptionMaterial.Length);
+                part.material = corruptionMaterial[randomIndex];
+                Debug.Log("Corrupted:" + part.gameObject.name);
             }
         }
     }
