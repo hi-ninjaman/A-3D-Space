@@ -2,6 +2,8 @@
 
 # FLASHING LIGHTS WARNING. BEWARE.
 
+-# psst... you gotta unzip the game, and run the .exe file to play!
+
 A 3d rouge-like game that focuses on movement. There is multiple movement mechanics, such as sliding and diving(sort of)! (IN DEVELOPMENT) 
 
 I made this game because I wanted a break from my other project. I also had the insparation from games like Nullscape and Grace! (roblox games, ikik 😔)
