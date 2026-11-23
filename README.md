@@ -6,6 +6,8 @@ A 3d rouge-like game that focuses on movement. There is multiple movement mechan
 
 I made this game because I wanted a break from my other project. I also had the insparation from games like Nullscape and Grace! (roblox games, ikik 😔)
 
+I also really wanted to make a 3d platformer, using systems from a lot of other games I like to put something together.
+
 Controls:
 
 WASD is used to move.
