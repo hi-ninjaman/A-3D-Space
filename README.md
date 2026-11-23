@@ -2,7 +2,7 @@
 
 # FLASHING LIGHTS WARNING. BEWARE.
 
--# psst... you gotta unzip the game, and run the .exe file to play!
+psst... you gotta unzip the game, and run the .exe file to play!
 
 A 3d rouge-like game that focuses on movement. There is multiple movement mechanics, such as sliding and diving(sort of)! (IN DEVELOPMENT) 
 
