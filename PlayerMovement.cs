@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
     public float proneHeight = 0.5f;
+    public float normalFOV = 90f;
+    public float zoomedFOV = 60f;
     public Camera playerCamera;
 
     [Header("Speeds")]
@@ -55,13 +57,15 @@ public class PlayerMovement : MonoBehaviour
     {
         defaultCameraHeight = playerCamera.transform.localPosition.y;
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; // locks the cursor
+        Cursor.visible = false; // makes the cursor invisible
     }
 
 
     void Update()
     {
+        // defining all of the things that we will need to know
+
         Vector3 foward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -77,7 +81,16 @@ public class PlayerMovement : MonoBehaviour
         Vector3 inputDirection = (foward * vertical) + (right * horizontal);
         inputDirection = Vector3.ClampMagnitude(inputDirection, 1f);
 
-        // if the key C is pressed, the player is 
+        if (Input.GetMouseButton(1))
+        {
+            playerCamera.fieldOfView = zoomedFOV;
+        }
+        else
+        {
+            playerCamera.fieldOfView = normalFOV;
+        }
+
+        // if the key C is pressed, the player is running, the player is NOT sliding, and the player can move, run this code
         if (Input.GetKeyDown(KeyCode.C) && isRunning && !isSliding && canMove)
         {
             isSliding = true;
@@ -92,9 +105,10 @@ public class PlayerMovement : MonoBehaviour
         }
         Vector3 horizontalMovement = Vector3.zero;
 
-        // if the boolean that determines if the player is sliding is true, run this function
+        // if the player is sliding, run this code
         if (isSliding)
         {
+            // sets the slide to speed to currentSlideSpeed first, then subtracts by slideFriction every time. Stops at 
             currentSlideSpeed = Mathf.MoveTowards(currentSlideSpeed, 0f, slideFriction * Time.deltaTime);
 
             Vector3 targetDirection = transform.forward;
@@ -102,12 +116,13 @@ public class PlayerMovement : MonoBehaviour
             slideDirection = Vector3.Slerp(slideDirection, targetDirection, slideSteering * Time.deltaTime).normalized;
             horizontalMovement = slideDirection * currentSlideSpeed;
 
+            // if your slide speed is less than the minimum set speed, set it equal to the minimum slide speed 
             if (currentSlideSpeed <= minimumSlideSpeed)
             {
                 currentSlideSpeed = minimumSlideSpeed;
             }
         }
-        else
+        else // (aka if the player is NOT sliding)
         {
             horizontalMovement = canMove ? inputDirection * currentSpeed : Vector3.zero;
         }
@@ -138,6 +153,7 @@ public class PlayerMovement : MonoBehaviour
         {
             slopeMomentum = Vector3.MoveTowards(slopeMomentum, Vector3.zero, slopeAcceleration * Time.deltaTime);
         }
+
         horizontalMovement += new Vector3(slopeMomentum.x, 0, slopeMomentum.z);
 
         horizontalMovement = Vector3.ClampMagnitude(horizontalMovement, maxSlopeSpeed);
@@ -153,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = movementDirectionY;
         }
 
-        if (!characterController.isGrounded)
+        if (!characterController.isGrounded) // this calculates gravity
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
